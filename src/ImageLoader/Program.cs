@@ -3,6 +3,7 @@ using System.IO;
 using ImageLoader.Contract;
 using ImageLoader.Contract.Helpers;
 using ImageLoader.Contract.Settings;
+using ImageLoader.DataFlow.Infrastructure;
 using ImageLoader.Models;
 using ImageLoader.Services;
 using ImageLoader.Settings;
@@ -60,15 +61,16 @@ namespace ImageLoader
             return services.BuildServiceProvider();
         }
         
-        private static void ConfigureAsyncPattern(this IServiceCollection serviceCollection, ImplementAsyncPattern implementReTry)
+        private static void ConfigureAsyncPattern(this IServiceCollection services, ImplementAsyncPattern implementReTry)
         {
             switch (implementReTry)
             {
                 case ImplementAsyncPattern.TaskBasedAsync:
-                    serviceCollection.ConfigureTaskBasedAsyncServices();
+                    services.ConfigureTaskBasedAsyncServices();
                     break;
                 case ImplementAsyncPattern.DataFlow:
-                    throw new NotImplementedException();
+                    services.ConfigureDataFlowServices();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(implementReTry), implementReTry, null);
             }

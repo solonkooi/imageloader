@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ImageLoader.Contract\ImageLoader.Contract.csproj" />
+    <ProjectReference Include="..\ImageLoader.DataFlow\ImageLoader.DataFlow.csproj" />
     <ProjectReference Include="..\ImageLoader.TaskBasedAsyncPattern\ImageLoader.TaskBasedAsyncPattern.csproj" />
   </ItemGroup>
 
