@@ -12,9 +12,9 @@ namespace ImageLoader.Contract.Service
         public ILogger Logger { get; set; }
         public HttpClient HttpClient { get; set; }
 
-        protected BaseFileLoader(IHttpClientFactory httpClientFactory, ILogger logger)
+        protected BaseFileLoader(HttpClient httpClient, ILogger logger)
         {
-            HttpClient = httpClientFactory.CreateClient();
+            HttpClient = httpClient;
             Logger = logger;
         }
 

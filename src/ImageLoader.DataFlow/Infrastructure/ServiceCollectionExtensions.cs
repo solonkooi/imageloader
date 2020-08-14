@@ -9,7 +9,7 @@ namespace ImageLoader.DataFlow.Infrastructure
         public static IServiceCollection ConfigureDataFlowServices(this IServiceCollection services)
         {
             services.AddSingleton<IFileLoader, FileLoader>();
-            services.AddHttpClient();
+            services.AddHttpClient<IFileLoader, FileLoader>();
             return services;
         }
     }
