@@ -5,11 +5,11 @@ using ImageLoader.TaskBasedAsyncPattern.Helper.Interfaces;
 
 namespace ImageLoader.TaskBasedAsyncPattern.Helper
 {
-    public class RetryHelper: IRetryHelper
+    public class CustomRetry: IRetry
     {
         private readonly IRetrySettings _settings;
 
-        public RetryHelper(IRetrySettings settings)
+        public CustomRetry(IRetrySettings settings)
         {
             _settings = settings;
         }

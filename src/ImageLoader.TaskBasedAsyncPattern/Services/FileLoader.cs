@@ -23,23 +23,23 @@ namespace ImageLoader.TaskBasedAsyncPattern.Services
         private readonly ConcurrentBag<int> _startThreadIds = new ConcurrentBag<int>();
         private readonly ConcurrentBag<int> _endThreadIds = new ConcurrentBag<int>();
         private readonly HttpClient _httpClient;
-        private readonly IRetryHelper _retryHelper;
+        private readonly IRetry _retry;
         private readonly IFileUtils _fileUtils;
         private readonly IThreadsLimiterFactory _threadsLimiterFactory;
 
         public FileLoader(IFileUtils fileUtils,
             ILogger<FileLoader> logger,
             IFileLoaderSettings settings,
-            IHttpClientFactory httpClient,
-            IRetryHelper retryHelper,
+            HttpClient httpClient,
+            IRetry retry,
             IThreadsLimiterFactory threadsLimiterFactory)
         {
             _settings = settings;
             _fileUtils = fileUtils;
             _logger = logger;
             _random = new Random();
-            _httpClient = httpClient.CreateClient();
-            _retryHelper = retryHelper;
+            _httpClient = httpClient;
+            _retry = retry;
             _threadsLimiterFactory = threadsLimiterFactory;
             _pathDirectory = $"{Directory.GetCurrentDirectory()}{_settings.DownloadDirectory}";
         }
@@ -48,7 +48,7 @@ namespace ImageLoader.TaskBasedAsyncPattern.Services
         {
             _urls = await _fileUtils.GetDataListAsync();
             maxDegreeOfParallelism ??= _settings.BulkSize;
-            using (IThreadsLimiter threadsLimiter = 
+            using (var threadsLimiter = 
                 _threadsLimiterFactory.Create(maxDegreeOfParallelism.Value, maxDegreeOfParallelism.Value))
             {
                 var tasks = new List<Task>();
@@ -57,7 +57,7 @@ namespace ImageLoader.TaskBasedAsyncPattern.Services
                     await threadsLimiter.WaitAsync();
                     var downloadPath = await GetDownloadPathAsync();
                     tasks.Add(threadsLimiter.PerformActionAndReleaseAsync(() =>
-                        _retryHelper.ExecuteAsync(async () =>
+                        _retry.ExecuteAsync(async () =>
                             await DownloadFileAsync(await GetRandomUrlAsync(), downloadPath))
                     )
                 );

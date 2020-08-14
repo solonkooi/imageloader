@@ -8,12 +8,12 @@ using Polly;
 
 namespace ImageLoader.TaskBasedAsyncPattern.Helper
 {
-    public class PollyRetryHelper: IRetryHelper
+    public class PollyRetry: IRetry
     {
         private readonly ILogger _logger;
         private readonly IRetrySettings _settings;
 
-        public PollyRetryHelper(IRetrySettings settings, ILogger<PollyRetryHelper> logger)
+        public PollyRetry(IRetrySettings settings, ILogger<PollyRetry> logger)
         {
             _settings = settings;
             _logger = logger;

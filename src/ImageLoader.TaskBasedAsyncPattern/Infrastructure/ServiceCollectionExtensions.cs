@@ -13,14 +13,13 @@ namespace ImageLoader.TaskBasedAsyncPattern.Infrastructure
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection ConfigureTaskBasedAsyncServices(this IServiceCollection services)
+        public static void ConfigureTaskBasedAsyncServices(this IServiceCollection services)
         {
             services.AddSingleton<IFileLoader, FileLoader>()
                 .AddSingleton<IThreadsLimiterFactory, ThreadsLimiterFactory>();
-            services.AddHttpClient();
+            services.AddHttpClient<IFileLoader, FileLoader>();
             services = (ServiceCollection)ConfigureReTryHelper(services, EnumSelectHelper.GetSelectValueEnum<ImplementReTry>());
             services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
-            return services;
         }
         
         private static IServiceCollection ConfigureReTryHelper(IServiceCollection services, ImplementReTry implementReTry)
@@ -28,10 +27,10 @@ namespace ImageLoader.TaskBasedAsyncPattern.Infrastructure
             switch (implementReTry)
             {
                 case ImplementReTry.Polly:
-                    services.AddTransient<IRetryHelper, PollyRetryHelper>();
+                    services.AddTransient<IRetry, PollyRetry>();
                     break;
                 case ImplementReTry.Custom:
-                    services.AddTransient<IRetryHelper, RetryHelper>();
+                    services.AddTransient<IRetry, CustomRetry>();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(implementReTry), implementReTry, null);

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace ImageLoader.TaskBasedAsyncPattern.Helper.Interfaces
 {
-    public interface IRetryHelper
+    public interface IRetry
     {
         Task ExecuteAsync(Func<Task> action);
     }
