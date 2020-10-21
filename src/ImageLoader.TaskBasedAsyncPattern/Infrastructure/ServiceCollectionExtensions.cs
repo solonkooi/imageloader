@@ -27,10 +27,10 @@ namespace ImageLoader.TaskBasedAsyncPattern.Infrastructure
             switch (implementReTry)
             {
                 case ImplementReTry.Polly:
-                    services.AddTransient<IRetry, PollyRetry>();
+                    services.AddSingleton<IRetry, PollyRetry>();
                     break;
                 case ImplementReTry.Custom:
-                    services.AddTransient<IRetry, CustomRetry>();
+                    services.AddSingleton<IRetry, CustomRetry>();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(implementReTry), implementReTry, null);
