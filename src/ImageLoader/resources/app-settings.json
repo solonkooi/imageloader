@@ -1,0 +1,14 @@
+{
+  "Configuration": {
+    "BulkSize": 10,
+    "DownloadDirectory": "\\resources\\files\\",
+    "FilePath": "resources/Url.csv",
+    "MaxRetryCount": "5",
+    "DelaySecond": "1"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information"
+    }
+  }
+}
